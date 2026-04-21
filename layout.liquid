@@ -40,7 +40,8 @@
                 {% if train.is_cancelled %}
                   <span class="bg-black text-white rounded px-2 py-1 text-lg font-bold">Cancelled</span>
                 {% elsif train.is_delayed %}
-                  <span class="text-lg line-through ml-2">{{ train.scheduled | date: "%H:%M" }} (est. {{ train.estimated | date: "%H:%M" }})</span>
+                  <s><span class="text-lg ml-2">{{ train.scheduled | date: "%H:%M" }}</span></s>
+                  <span class="text-lg ml-2">{{ train.estimated | date: "%H:%M" }}</span>
                 {% else %}
                   <span class="text-3xl font-bold">{{ train.scheduled | date: "%H:%M" }}</span>
                 {% endif %}
@@ -55,23 +56,21 @@
     </div>
 
     {% if alerts.size > 0 %}
-    <div class="w--full">
-        <div class="text-sm">
+    <div class="flex flex--left flex--col w--full">
           {% for status in alerts %}
             <div class="flex flex--row">
               <span class="font-bold mr-1">{{ status[0] }}:</span>
               {% for line in status[1] %}
-              <span class="bg--gray-15 rounded--small px-16">
+              <div class="bg--gray-15 rounded--small px--2">
                 <span class="ml-4 text--white">{{ line }}</span>
-              </span>
+              </div>
               {% endfor %}
             </div>
           {% endfor %}
-        </div>
       </div>
     {% endif %}
 
-    <div>
+    <div class="flex flex--left w--full">
       <span class="font-bold text-lg">TfL & National Rail</span>
       <span class="text-sm text-gray-600">Updated {{ last_updated | date: "%H:%M" }}</span>
     </div>
