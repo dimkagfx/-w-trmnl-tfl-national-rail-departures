@@ -1,49 +1,49 @@
-  <div class="layout flex my--0 flex--col">
-    <div class="w--full">
+  <div class="layout flex flex--col">
+    <div class="grow w--full">
     {% if trains.size > 0 %}
       <table class="table table--small">
         <thead>
           <tr>
             <th></th>
-            <th>Destination</th>
-            <th>Platform</th>
-            <th>Departs</th>
+            <th class="title">Destination</th>
+            <th class="title">Platform</th>
+            <th class="title">Departs</th>
           </tr>
         </thead>
-        <tbody class="divide-y divide-black">
+        <tbody>
           {% for train in trains limit: 8 %}
             <tr>
               
               <!-- Transport Mode Icon -->
-              <td>
+              <td class="pl--3">
                 {% if train.mode == 'Rail' %}
                   <!-- Train Icon for National Rail (removed explicit width/height from SVG to allow CSS to control) -->
-                  <img class="object-contain image-dither" width="20" height="20" src="https://raw.githubusercontent.com/dimkagfx/trmnl-london-departure-board/refs/heads/master/National_Rail_logo.svg" />
+                  <img class="image-dither" width="20" height="20" src="https://raw.githubusercontent.com/dimkagfx/trmnl-london-departure-board/refs/heads/master/National_Rail_logo.svg" />
                 {% else %}
                   <!-- Tram/Subway Icon for TfL / DLR -->
-                  <img class="object-contain image-dither" width="20" height="20" src="https://raw.githubusercontent.com/dimkagfx/trmnl-london-departure-board/refs/heads/master/tfl_roundel.svg" />
+                  <img class="image-dither" width="20" height="20" src="https://raw.githubusercontent.com/dimkagfx/trmnl-london-departure-board/refs/heads/master/tfl_roundel.svg" />
                 {% endif %}
               </td>
 
               <!-- Destination -->
               <td>
-                <span class="text-3xl font-bold" data-clamp="1">{{ train.dest }}</span>
+                <span class="label" data-clamp="1">{{ train.dest }}</span>
               </td>
 
               <!-- Platform -->
               <td>
-                  <span class="text-3xl font-bold">{{ train.platform ? train.platform : '-' }}</span>
+                  <span class="label">{{ train.platform ? train.platform : '-' }}</span>
               </td>
 
               <!-- Time Logic -->
               <td>
                 {% if train.is_cancelled %}
-                  <span class="bg-black text-white rounded px-2 py-1 text-lg font-bold">Cancelled</span>
+                  <span class="label">Cancelled</span>
                 {% elsif train.is_delayed %}
-                  <s><span class="text-lg ml-2">{{ train.scheduled | date: "%H:%M" }}</span></s>
-                  <span class="text-lg ml-2">{{ train.estimated | date: "%H:%M" }}</span>
+                  <s><span class="label mr--2">{{ train.scheduled_formatted }}</span></s>
+                  <span class="label">{{ train.estimated_formatted }}</span>
                 {% else %}
-                  <span class="text-3xl font-bold">{{ train.scheduled | date: "%H:%M" }}</span>
+                  <span class="label">{{ train.scheduled_formatted }}</span>
                 {% endif %}
               </td>
               
@@ -54,24 +54,25 @@
     {% else %}
     {% endif %}
     </div>
-
-    {% if alerts.size > 0 %}
-    <div class="flex flex--left flex--col w--full">
-          {% for status in alerts %}
-            <div class="flex flex--row">
-              <span class="font-bold mr-1">{{ status[0] }}:</span>
-              {% for line in status[1] %}
-              <div class="bg--gray-15 rounded--small px--2">
-                <span class="ml-4 text--white">{{ line }}</span>
+    
+    <div class="flex flex--col w--full mt--auto">
+      {% if alerts.size > 0 %}
+      <div class="flex flex--left flex--col w--full">
+            {% for status in alerts %}
+              <div class="flex flex--row">
+                <b class="mx--1">{{ status[0] }}:</b>
+                {% for line in status[1] %}
+                <div class="bg--gray-15 rounded--small px--2 py--1">
+                  <span class="text--white">{{ line }}</span>
+                </div>
+                {% endfor %}
               </div>
-              {% endfor %}
-            </div>
-          {% endfor %}
-      </div>
-    {% endif %}
+            {% endfor %}
+        </div>
+      {% endif %}
 
-    <div class="flex flex--left w--full">
-      <span class="font-bold text-lg">TfL & National Rail</span>
-      <span class="text-sm text-gray-600">Updated {{ last_updated | date: "%H:%M" }}</span>
+      <div class="flex flex--row flex--right rounded--small w--full bg--gray-40 px--2 py--1">
+        <b class="text--white">Updated {{ last_updated }}</span>
+      </div>
     </div>
 </div>
