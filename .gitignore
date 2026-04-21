@@ -1,13 +1,12 @@
 # Environments
 .env
 .venv
+.wrangler
 env/
 venv/
-<<<<<<< HEAD
-=======
+
 node_modules/
 package-lock.json
->>>>>>> 73fcb75 (first commit)
 
 # Python
 __pycache__/
