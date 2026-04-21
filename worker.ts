@@ -1,6 +1,7 @@
 import { TflClient } from './tflClient';
 import { NationalRailClient } from './nationalRailClient';
 import { Train, Alert } from './types';
+import { formatEpochToUKTime } from './utils';
 
 export interface Env {
   // These should be set as "Secrets" or "Vars" in your Cloudflare Worker / wrangler.toml
@@ -28,18 +29,6 @@ export default {
         minute: '2-digit',
         hour12: false,
       }).format(now);
-    };
-
-    // Helper to format epoch timestamps to UK local time (HH:MM)
-    const formatEpochToUKTime = (epochSeconds: number | undefined): string | undefined => {
-      if (epochSeconds === undefined || epochSeconds === null) return undefined;
-      const date = new Date(epochSeconds * 1000); // Convert seconds to milliseconds
-      return new Intl.DateTimeFormat('en-GB', {
-        timeZone: 'Europe/London',
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: false,
-      }).format(date);
     };
 
     try {
